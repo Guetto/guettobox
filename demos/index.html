@@ -119,13 +119,32 @@
 												}
 											});
 							var boxModal = jQuery('body').edbox({
-													modal   : false,
+													boxAlert: true,
+													modal: false,
 													type    : 'info',
 													title   : 'EdBox',
 													text    : "This is a example of the Edbox no modal style.",
 													buttons :[{
         												name:"Close"
         											}]
+        										});
+
+							var boxAutoClose = jQuery('body').edbox({
+													boxAlert: true,
+													type    : 'info',
+													title   : 'EdBox',
+													text    : "Auto Close after 5 seconds.",
+													backgroundColorModal: '#ffffff',
+													modal: true,
+													autoClose: true,
+													timeClose: 5000
+        										});
+												
+							var boxAutoCloseImgLoad = jQuery('body').edbox({
+													imgLoading: '../images/windows.gif',
+													type: 'loading',
+													autoClose: true,
+													timeClose: 5000
         										});
 				
 				jQuery("#edboxTypes").click(function(){
@@ -139,7 +158,14 @@
 				jQuery("#edboxModal").click(function(){
 					boxModal.open();
 				});
-
+	
+				jQuery("#edboxAutoClose").click(function(){
+					boxAutoClose.open();
+				});
+				
+				jQuery("#edboxAutoCloseImage").click(function(){
+					boxAutoCloseImgLoad.open();
+				});
 				
 
 			});
@@ -149,6 +175,8 @@
     	<button id="edboxTypes"> EdBox's Types</button>
     	<button id="edboxPositions"> EdBox's Positions</button>
     	<button id="edboxModal"> EdBox no Modal Style</button>
+		<button id="edboxAutoClose"> EdBox Auto Close</button>
+		<button id="edboxAutoCloseImage"> EdBox Auto Close Image Loading</button>
     </body>
  </html>
 

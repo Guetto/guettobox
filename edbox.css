@@ -6,6 +6,7 @@
     top: 0;
     opacity: 0.3;
     display: none;
+	background-color: #000;
 }
 
 .edbox{
@@ -112,6 +113,12 @@
 
 .edbox.info .button:hover{
     background-color: #3498db;
+}
+
+.edbox.loading{
+    border: 0px;
+	text-align: left;
+	width: 100px;
 }
 
 .edbox.show{

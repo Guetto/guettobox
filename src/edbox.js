@@ -5,10 +5,13 @@
         //EdBox's defaults properties
         var defaults = {
             modal  : true,
+			boxAlert : true,
             type   : 'alert',
             title  : '',
             text   : '',
-			backgroundColorModal : '#000',
+			autoClose: false,
+			timeClose: 5000,
+			imgLoading: '',
             position: "center",
             cancel: function(){},
             confirm: function(){},
@@ -33,7 +36,6 @@
 
         var edBoxModal   = document.getElementById('edbox-modal') || wrapElement.append( _createElementModal(properties) ),
             edBoxElement = _createElementEdBox( properties );
-
             $(wrapElement).append( edBoxElement );
             properties.elementModal = edBoxModal;
 
@@ -42,8 +44,7 @@
 
     function _createElementModal(properties){
         var elementModal =  document.createElement('div');
-        elementModal.id = 'edbox-modal';
-		elementModal.style.backgroundColor = properties.backgroundColorModal;
+        elementModal.id = 'edbox-modal';	
         return elementModal; 
     }
 
@@ -68,6 +69,15 @@
 
         return edBox;
     }
+	
+	function _createImgElement( properties ){
+
+        var imgElement        = document.createElement('img');
+		
+		imgElement.src = properties.imgLoading;
+
+        return imgElement;
+    }
 
 
     function _bindActions(edBoxInstance, properties){
@@ -76,16 +86,18 @@
             
             properties.beforeOpen();
             
-            edBoxInstance.animate({
-                opacity: 100,
-                height: "fadeOut"
-                },
-                500,
-                function() {
-                    $(this).removeClass('hide').addClass('show');
-                    properties.afterOpen();
-                });
-				
+			if(properties.boxAlert	==true){
+				edBoxInstance.animate({
+				opacity: 100,
+				height: "fadeOut"
+				},
+				500,
+				function() {
+					$(this).removeClass('hide').addClass('show');
+					properties.afterOpen();
+				});
+			}
+			
 			if(properties.modal	==true){
 				$('#edbox-modal').animate({
                 opacity: 0.8,
@@ -96,24 +108,34 @@
                     $(this).show();
                 });
 			}
-
-            
+			
+			if(properties.autoClose	==true){
+				setTimeout(function(){edBoxInstance.close()}, properties.timeClose);
+            }
+			
+			if(properties.type	=='loading'){
+				edBoxInstance.append(_createImgElement( properties ));
+            }
+			
        };
 
        edBoxInstance.close = function(){
             
             properties.beforeClose();
             
-            edBoxInstance.animate({
+			if(properties.boxAlert	==true){
+				edBoxInstance.animate({
                 opacity: 0,
                 height: "fadeOut"
                 },
                 500,
                 function() {
                     $(this).removeClass('show').addClass('hide');
+					$(this).children('img').remove();
                     properties.afterClose();
                 });
-
+			}
+			
 			if(properties.modal	== true){
 				$('#edbox-modal').animate({
                 opacity: 0,
@@ -137,6 +159,7 @@
             var classShowHide = this.hasClass('show') ? 'show' : 'hide'; 
             this.removeClass().addClass("edbox").addClass( type ).addClass( classShowHide );
        };
+
     }
 
     function _createButtons( edBoxInstance, arrayButtons ){
